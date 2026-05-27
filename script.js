@@ -1,230 +1,191 @@
-// Mobile Menu Toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
+/* ============================================================
+   Geluidsexperience — Premium Redesign Interactions
+   ============================================================ */
 
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-});
-
-// Close menu when link is clicked
-document.querySelectorAll('.nav-menu a').forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-    });
-});
-
-// Gallery Setup
-const mediaFiles = [
-    'IMG_2419.jpeg',
-    'IMG_0501.jpeg',
-    '0221EBBA-13E4-48D7-B686-879C5A579C95.jpg',
-    'IMG_0809.jpeg',
-    'IMG_0746.jpeg',
-    '284BCA2D-B503-4412-A886-A4A6A87DA308.mp4',
-    'D646CEE8-17C5-497B-B8B9-F5EB22EA00FD.jpg',
-    'IMG_4461.jpeg',
-    'IMG_7446.jpeg',
-    '85C3DCCC-2ACF-425A-A56A-9DEBB21C1D9D.jpg',
-    'IMG_3901.jpeg',
-    '5B851922-3080-4E4A-9D78-BFB768629837.jpg',
-    '1993BE42-4E68-4334-BECB-FC6D475923E3.mp4',
-    'IMG_3902.jpeg',
-    'IMG_0841.jpeg',
-    'IMG_0549.jpeg',
-    'IMG_3430.jpeg',
-    'IMG_3431.jpeg',
-    '085F8613-D653-4D81-B08E-507C9F8BF0E8.jpg',
-    'IMG_6111.MOV',
-    'IMG_0440.jpeg',
-    'IMG_2924.jpeg',
-    'IMG_5701.jpeg'
+/* ---------- Portfolio media (photos only) ---------- */
+const PORTFOLIO = [
+  { src: "media/IMG_2419.jpeg", label: "Live op het podium",       meta: "Front-of-house" },
+  { src: "media/IMG_0501.jpeg", label: "Opbouw bij daglicht",      meta: "Stage prep" },
+  { src: "media/IMG_0746.jpeg", label: "Volledige PA in positie",  meta: "Soundcheck" },
+  { src: "media/IMG_4461.jpeg", label: "Op het podium",            meta: "Band setup" },
+  { src: "media/IMG_3901.jpeg", label: "In het publiek",           meta: "Live show" },
+  { src: "media/IMG_7446.jpeg", label: "Licht in scène",           meta: "Lichtdesign" },
+  { src: "media/IMG_3902.jpeg", label: "Volle bak",                meta: "Live concert" },
+  { src: "media/photo_5B85.jpg", label: "Achter de knoppen",       meta: "FOH mix" },
+  { src: "media/IMG_0841.jpeg", label: "Zicht vanaf de zijkant",   meta: "Stage view" },
+  { src: "media/IMG_0549.jpeg", label: "Voor de show",             meta: "Opbouw" },
+  { src: "media/photo_D646.jpg", label: "Intieme set",             meta: "Akoestisch" },
+  { src: "media/IMG_0440.jpeg", label: "Avondset",                 meta: "Mix positie" },
+  { src: "media/IMG_2924.jpeg", label: "Speakerstack",             meta: "Outdoor PA" },
+  { src: "media/IMG_5701.jpeg", label: "Show opener",              meta: "Licht & geluid" },
 ];
 
-const videoExtensions = ['.mp4', '.webm', '.mov', '.MOV'];
+const frame = document.getElementById("carouselFrame");
+const thumbs = document.getElementById("carouselThumbs");
+const overlayLabel = document.getElementById("slideLabel");
+const overlayMeta = document.getElementById("slideMeta");
+const typeBadge = document.getElementById("slideTypeBadge");
+const counterCurrent = document.getElementById("counterCurrent");
+const counterTotal = document.getElementById("counterTotal");
+const progressBar = document.getElementById("progressBar");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
 
-// Carousel Setup
-const carouselTrack = document.getElementById('carouselTrack');
-const indicators = document.getElementById('indicators');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
+let currentIdx = 0;
+let advanceTimer = null;
+const ADVANCE_MS = 6500;
 
-let currentIndex = 0;
+/* --------- build slides --------- */
+PORTFOLIO.forEach((item, i) => {
+  const slide = document.createElement("div");
+  slide.className = "carousel-slide";
+  slide.dataset.index = i;
 
-// Populate Carousel
-mediaFiles.forEach((file, index) => {
-    const isVideo = videoExtensions.some(ext => file.toLowerCase().endsWith(ext));
-    const itemClass = isVideo ? 'carousel-item video-item' : 'carousel-item';
+  // blurred backdrop layer (same image, blurred + darkened)
+  const backdrop = document.createElement("img");
+  backdrop.className = "backdrop";
+  backdrop.src = item.src;
+  backdrop.alt = "";
+  backdrop.setAttribute("aria-hidden", "true");
+  backdrop.loading = i < 3 ? "eager" : "lazy";
+  slide.appendChild(backdrop);
 
-    const carouselItem = document.createElement('div');
-    carouselItem.className = itemClass;
+  // foreground image (full, never cropped)
+  const img = document.createElement("img");
+  img.className = "media";
+  img.src = item.src;
+  img.alt = item.label;
+  img.loading = i < 3 ? "eager" : "lazy";
+  slide.appendChild(img);
 
-    if (isVideo) {
-        carouselItem.innerHTML = `<video src="${file}" muted></video>`;
-    } else {
-        carouselItem.innerHTML = `<img src="${file}" alt="Portfolio image">`;
+  frame.insertBefore(slide, frame.querySelector(".slide-overlay"));
+
+  // build thumb
+  const thumb = document.createElement("div");
+  thumb.className = "thumb";
+  thumb.dataset.index = i;
+  const ti = document.createElement("img");
+  ti.src = item.src;
+  ti.alt = "";
+  ti.loading = "lazy";
+  thumb.appendChild(ti);
+  thumb.addEventListener("click", () => goTo(i, true));
+  thumbs.appendChild(thumb);
+});
+
+counterTotal.textContent = String(PORTFOLIO.length).padStart(2, "0");
+
+/* --------- progress bar tick --------- */
+let progressStart = null;
+let progressRaf = null;
+function tickProgress(now) {
+  if (!progressStart) progressStart = now;
+  const elapsed = now - progressStart;
+  const pct = Math.min(100, (elapsed / ADVANCE_MS) * 100);
+  progressBar.style.width = pct + "%";
+  if (pct < 100) progressRaf = requestAnimationFrame(tickProgress);
+}
+function resetProgress() {
+  progressStart = null;
+  if (progressRaf) cancelAnimationFrame(progressRaf);
+  progressBar.style.width = "0%";
+  progressRaf = requestAnimationFrame(tickProgress);
+}
+
+/* --------- navigation --------- */
+function goTo(idx, userInitiated = false) {
+  const total = PORTFOLIO.length;
+  const next = ((idx % total) + total) % total;
+  const slides = frame.querySelectorAll(".carousel-slide");
+  slides.forEach((s, i) => {
+    s.classList.toggle("active", i === next);
+  });
+
+  // update thumbs
+  thumbs.querySelectorAll(".thumb").forEach((t, i) => {
+    t.classList.toggle("active", i === next);
+  });
+  const active = thumbs.querySelector(".thumb.active");
+  if (active) {
+    const targetLeft = active.offsetLeft - thumbs.clientWidth / 2 + active.clientWidth / 2;
+    thumbs.scrollTo({ left: targetLeft, behavior: "smooth" });
+  }
+
+  const item = PORTFOLIO[next];
+  overlayLabel.innerHTML = item.label;
+  overlayMeta.textContent = item.meta;
+  typeBadge.textContent = "Foto";
+  typeBadge.className = "slide-type-badge photo";
+
+  counterCurrent.textContent = String(next + 1).padStart(2, "0");
+
+  currentIdx = next;
+  resetProgress();
+  scheduleAdvance(userInitiated);
+}
+
+function scheduleAdvance() {
+  clearTimeout(advanceTimer);
+  advanceTimer = setTimeout(() => goTo(currentIdx + 1), ADVANCE_MS);
+}
+
+prevBtn.addEventListener("click", () => goTo(currentIdx - 1, true));
+nextBtn.addEventListener("click", () => goTo(currentIdx + 1, true));
+
+/* --------- keyboard --------- */
+document.addEventListener("keydown", (e) => {
+  if (e.target.matches("input, textarea, select")) return;
+  if (e.key === "ArrowLeft")  goTo(currentIdx - 1, true);
+  if (e.key === "ArrowRight") goTo(currentIdx + 1, true);
+});
+
+/* --------- swipe (touch) --------- */
+let touchStartX = 0;
+frame.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+frame.addEventListener("touchend", (e) => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) goTo(currentIdx + (dx < 0 ? 1 : -1), true);
+}, { passive: true });
+
+/* --------- init --------- */
+goTo(0);
+
+/* ============================================================
+   Navbar scroll state
+   ============================================================ */
+const navbar = document.getElementById("navbar");
+function syncNav() {
+  navbar.classList.toggle("scrolled", window.scrollY > 24);
+}
+window.addEventListener("scroll", syncNav, { passive: true });
+syncNav();
+
+/* ============================================================
+   Reveal-on-scroll
+   ============================================================ */
+const reveals = document.querySelectorAll(".reveal");
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("in");
+      io.unobserve(entry.target);
     }
+  });
+}, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
+reveals.forEach((el) => io.observe(el));
 
-    carouselItem.addEventListener('click', () => openModal(file, isVideo));
-    carouselTrack.appendChild(carouselItem);
-
-    // Create indicator
-    const indicator = document.createElement('div');
-    indicator.className = 'indicator' + (index === 0 ? ' active' : '');
-    indicator.addEventListener('click', () => goToSlide(index));
-    indicators.appendChild(indicator);
-});
-
-function updateCarousel() {
-    const offset = -currentIndex * 100;
-    carouselTrack.style.transform = `translateX(${offset}%)`;
-
-    document.querySelectorAll('.indicator').forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
-    });
-}
-
-function goToSlide(index) {
-    currentIndex = index;
-    updateCarousel();
-}
-
-function nextSlide() {
-    currentIndex = (currentIndex + 1) % mediaFiles.length;
-    updateCarousel();
-}
-
-function prevSlide() {
-    currentIndex = (currentIndex - 1 + mediaFiles.length) % mediaFiles.length;
-    updateCarousel();
-}
-
-prevBtn.addEventListener('click', prevSlide);
-nextBtn.addEventListener('click', nextSlide);
-
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') prevSlide();
-    if (e.key === 'ArrowRight') nextSlide();
-});
-
-// Auto-advance carousel every 8 seconds
-setInterval(nextSlide, 8000);
-
-// Fallback gallery grid
-const gallery = document.getElementById('gallery');
-mediaFiles.forEach(file => {
-    const isVideo = videoExtensions.some(ext => file.toLowerCase().endsWith(ext));
-    const itemClass = isVideo ? 'gallery-item video-item' : 'gallery-item';
-
-    const galleryItem = document.createElement('div');
-    galleryItem.className = itemClass;
-
-    if (isVideo) {
-        galleryItem.innerHTML = `<video src="${file}" muted></video>`;
-    } else {
-        galleryItem.innerHTML = `<img src="${file}" alt="Portfolio image" loading="lazy">`;
+/* ============================================================
+   Contact form (graceful for non-Netlify previews)
+   ============================================================ */
+const form = document.getElementById("contactForm");
+const msg = document.getElementById("formMessage");
+if (form) {
+  form.addEventListener("submit", (e) => {
+    if (!window.location.host.includes("netlify")) {
+      e.preventDefault();
+      msg.textContent = "Bedankt! Je bericht is verzonden. We nemen snel contact op.";
+      msg.className = "form-message success";
+      form.reset();
     }
-
-    galleryItem.addEventListener('click', () => openModal(file, isVideo));
-    gallery.appendChild(galleryItem);
-});
-
-// Modal
-let modal = document.querySelector('.modal');
-
-if (!modal) {
-    modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.innerHTML = `
-        <div class="modal-content" id="modalContent">
-            <span class="modal-close">&times;</span>
-        </div>
-    `;
-    document.body.appendChild(modal);
+  });
 }
-
-function openModal(file, isVideo) {
-    const modalContent = document.getElementById('modalContent');
-    const closeBtn = document.querySelector('.modal-close');
-
-    if (isVideo) {
-        modalContent.innerHTML = `
-            <video src="${file}" controls style="width: 100%; max-height: 90vh; border-radius: 10px;"></video>
-            <span class="modal-close">&times;</span>
-        `;
-    } else {
-        modalContent.innerHTML = `
-            <img src="${file}" alt="Full size image" style="width: 100%; max-height: 90vh; border-radius: 10px;">
-            <span class="modal-close">&times;</span>
-        `;
-    }
-
-    modal.classList.add('active');
-
-    // Add close functionality
-    document.querySelector('.modal-close').addEventListener('click', closeModal);
-}
-
-function closeModal() {
-    modal.classList.remove('active');
-}
-
-// Close modal when clicking outside
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        closeModal();
-    }
-});
-
-// Keyboard close
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
-        closeModal();
-    }
-});
-
-// Contact Form
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(contactForm);
-
-    try {
-        const response = await fetch('/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(formData).toString()
-        });
-
-        if (response.ok) {
-            alert('Bedankt! Je bericht is verzonden. We nemen snel contact op.');
-            contactForm.reset();
-        } else {
-            alert('Er is een fout opgetreden. Probeer het later opnieuw.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Er is een fout opgetreden. Probeer het later opnieuw.');
-    }
-});
-
-// Scroll animations (optional enhancement)
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.service-card, .gallery-item').forEach(el => {
-    observer.observe(el);
-});
