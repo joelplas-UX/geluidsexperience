@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algemene Voorwaarden - Geluidsexperience</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --text: #f4f4f5;
+      --text-mute: #a1a1aa;
+      --gold: #d4af37;
+      --cyan: #00d4ff;
+      --maxw: 800px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 60px 32px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .meta {
+      color: var(--text-mute);
+      font-size: 14px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2 {
+      font-size: 1.4em;
+      margin-top: 40px;
+      margin-bottom: 16px;
+      color: var(--gold);
+    }
+
+    h3 {
+      font-size: 1.1em;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: var(--text-mute);
+      line-height: 1.75;
+    }
+
+    p strong {
+      color: var(--text);
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 16px;
+      color: var(--text-mute);
+    }
+
+    li {
+      margin-bottom: 8px;
+      line-height: 1.75;
+    }
+
+    a {
+      color: var(--cyan);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    a:hover {
+      color: var(--gold);
+    }
+
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .contact-block {
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.16);
+      border-radius: 8px;
+      padding: 24px;
+      margin-top: 40px;
+    }
+
+    .contact-block h3 {
+      color: var(--gold);
+      margin-top: 0;
+    }
+
+    .contact-block p {
+      margin-bottom: 8px;
+    }
+
+    .print-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.25s ease;
+    }
+
+    .print-button:hover {
+      background: var(--cyan);
+      transform: scale(1.05);
+    }
+
+    @media print {
+      .print-button,
+      a[href] {
+        display: none;
+      }
+
+      body {
+        background: white;
+        color: #000;
+      }
+
+      h2 {
+        color: #333;
+        page-break-after: avoid;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 40px 20px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      h2 {
+        font-size: 1.2em;
+      }
+
+      .print-button {
+        position: static;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="print-button" onclick="window.print()">📄 Afdrukken/PDF</button>
+
+  <div class="container">
+    <h1>Algemene Voorwaarden</h1>
+    <div class="meta">
+      <span>Geluidsexperience</span>
+      <span>•</span>
+      <span>Geldig vanaf 1 januari 2024</span>
+    </div>
+
+    <div class="section">
+      <h2>1. Definities</h2>
+      <p>In deze Algemene Voorwaarden wordt verstaan onder:</p>
+      <ul>
+        <li><strong>Opdrachtgever</strong>: De natuurlijke persoon of rechtspersoon die diensten van Geluidsexperience inhuurt</li>
+        <li><strong>Aannemer</strong>: Geluidsexperience, zijnde Joël Plas</li>
+        <li><strong>Diensten</strong>: Alle geluid- en lichtinstallaties, live-mix, geluidsverhuur, live-opnames en videodiensten</li>
+        <li><strong>Overeenkomst</strong>: De tussen Opdrachtgever en Aannemer gesloten overeenkomst voor het verlenen van Diensten</li>
+        <li><strong>Offerte</strong>: Het door Aannemer uitgebrachte kostprijs voorstel</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>2. Toepasselijkheid</h2>
+      <p>Deze Algemene Voorwaarden zijn van toepassing op alle aanbiedingen, offertes en overeenkomsten tussen Opdrachtgever en Aannemer, tenzij deze uitdrukkelijk schriftelijk zijn uitgesloten.</p>
+    </div>
+
+    <div class="section">
+      <h2>3. Aanbiedingen en Offertes</h2>
+      <p><strong>3.1</strong> Alle aanbiedingen en offertes van Aannemer zijn vrijblijvend, tenzij uitdrukkelijk anders is aangegeven.</p>
+      <p><strong>3.2</strong> Een aanbieding blijft 14 dagen geldig. Na afloop van deze termijn kan Aannemer zich niet meer aan de offerte gebonden verklaren.</p>
+      <p><strong>3.3</strong> De Opdrachtgever dient schriftelijk, per e-mail naar <a href="mailto:info@geluidsexperience.nl">info@geluidsexperience.nl</a>, de offerte te accepteren of af te wijzen.</p>
+    </div>
+
+    <div class="section">
+      <h2>4. Totstandkoming van de Overeenkomst</h2>
+      <p><strong>4.1</strong> De overeenkomst komt tot stand op het moment dat Aannemer de schriftelijke acceptatie van Opdrachtgever ontvangt.</p>
+      <p><strong>4.2</strong> Bij aanvaard van de offerte is Opdrachtgever aan de Overeenkomst gebonden en dient deze zich aan het gestelde hierin gehouden.</p>
+      <p><strong>4.3</strong> Opdrachtgever verplicht zich alle relevante informatie over het evenement volledig en waarheidsgetrouw aan te leveren.</p>
+    </div>
+
+    <div class="section">
+      <h2>5. Prijzen en Betaling</h2>
+      <p><strong>5.1</strong> Alle prijzen zijn exclusief BTW, tenzij anders vermeld.</p>
+      <p><strong>5.2</strong> Betaling dient plaats te vinden volgens de betalingscondities zoals vermeld in de offerte of factuur.</p>
+      <p><strong>5.3</strong> De standaard betalingstermijn bedraagt 14 dagen na factuurdatum, tenzij anders overeengekomen.</p>
+      <p><strong>5.4</strong> Betaling moet geschieden naar rekeningnummer van Aannemer, aan te vragen bij Aannemer.</p>
+      <p><strong>5.5</strong> Bij niet-betaling op de gestelde termijn kan Aannemer rentetoeslag berekenen van 1% per maand, of het wettelijk maximale bedrag.</p>
+    </div>
+
+    <div class="section">
+      <h2>6. Annulering en Wijzigingen</h2>
+      <p><strong>6.1</strong> Annulering door Opdrachtgever moet schriftelijk plaatsvinden naar <a href="mailto:info@geluidsexperience.nl">info@geluidsexperience.nl</a>.</p>
+      <p><strong>6.2 Annuleringsbeleid:</strong></p>
+      <ul>
+        <li>Annulering meer dan 30 dagen voor het event: geen kosten</li>
+        <li>Annulering 15-30 dagen voor het event: 50% van het totaalbedrag</li>
+        <li>Annulering minder dan 15 dagen voor het event: 100% van het totaalbedrag</li>
+      </ul>
+      <p><strong>6.3</strong> Wijzigingen aan de overeenkomst moeten schriftelijk door beide partijen worden bevestigd.</p>
+      <p><strong>6.4</strong> Wijzigingen kunnen tot gevolg hebben dat aanpassingen van de prijs noodzakelijk zijn.</p>
+    </div>
+
+    <div class="section">
+      <h2>7. Verplichtingen van Opdrachtgever</h2>
+      <p><strong>7.1</strong> Opdrachtgever dient ervoor zorg te dragen dat:</p>
+      <ul>
+        <li>Alle noodzakelijke vergunningen en toestemmingen zijn aangevraagd</li>
+        <li>De locatie geschikt is voor de installatie van de benodigde apparatuur</li>
+        <li>Elektriciteit en voldoende veilige ruimte beschikbaar zijn</li>
+        <li>Alle personen die betrokken zijn bij het event goed voorbereiding hebben ontvangen</li>
+      </ul>
+      <p><strong>7.2</strong> Opdrachtgever draagt zelf zorg voor:</p>
+      <ul>
+        <li>Alle overige artiesten, bands en performers</li>
+        <li>Catering en versnaperingen</li>
+        <li>Parkeergelegenheid</li>
+        <li>Veiligheidspersoneel (indien nodig)</li>
+      </ul>
+      <p><strong>7.3</strong> Opdrachtgever geeft Aannemer alle informatie die nodig is voor een goed verloop van het event.</p>
+    </div>
+
+    <div class="section">
+      <h2>8. Verplichtingen van Aannemer</h2>
+      <p><strong>8.1</strong> Aannemer verplicht zich:</p>
+      <ul>
+        <li>De afgesproken Diensten op professioneel niveau uit te voeren</li>
+        <li>Zich aan de afgesproken dag en tijd te houden</li>
+        <li>Alle benodigde apparatuur in goede staat mee te nemen</li>
+        <li>Professioneel en vriendelijk op te treden</li>
+      </ul>
+      <p><strong>8.2</strong> Aannemer voert de Diensten uit conform de geldende veiligheidseisen en normen.</p>
+    </div>
+
+    <div class="section">
+      <h2>9. Aansprakelijkheid</h2>
+      <p><strong>9.1</strong> Aannemer kan niet aansprakelijk worden gesteld voor:</p>
+      <ul>
+        <li>Technische storingen van apparatuur van derden</li>
+        <li>Storingen door ontoereikende of ongeschikte stroomvoorziening</li>
+        <li>Schade of verlies van eigendom van Opdrachtgever of derden</li>
+        <li>Gevolgen van niet-naleving van instructies van Aannemer</li>
+      </ul>
+      <p><strong>9.2</strong> De totale aansprakelijkheid van Aannemer, indien van toepassing, is beperkt tot het bedrag van de opdracht.</p>
+      <p><strong>9.3</strong> In geen geval is Aannemer aansprakelijk voor indirecte schade, zoals winstderving of immateriële schade.</p>
+    </div>
+
+    <div class="section">
+      <h2>10. Gebruik van Materiaal en Apparatuur</h2>
+      <p><strong>10.1</strong> Alle apparatuur van Aannemer blijft eigendom van Aannemer en mag niet zonder toestemming aan derden ter beschikking worden gesteld.</p>
+      <p><strong>10.2</strong> Opdrachtgever draagt zorg voor goed beheer van de apparatuur en is aansprakelijk voor beschadiging door schuld.</p>
+      <p><strong>10.3</strong> Normale slijtage komt voor rekening van Aannemer.</p>
+      <p><strong>10.4</strong> Schade als gevolg van onzorgvuldig gebruik of ongelukken komt volledig voor rekening van Opdrachtgever.</p>
+    </div>
+
+    <div class="section">
+      <h2>11. Fotografisch en Videomateriaal</h2>
+      <p><strong>11.1</strong> Aannemer behoudt zich het recht voor om foto's en video's van het event te maken voor portefeuilledoeleinden.</p>
+      <p><strong>11.2</strong> Indien Opdrachtgever niet wenst dat foto's of video's worden gemaakt, dient dit vooraf schriftelijk aan Aannemer te worden medegedeeld.</p>
+      <p><strong>11.3</strong> Aannemer mag deze foto's en video's gebruiken op zijn website en in promotioneel materiaal, mits alle gezichten pixelated zijn of toestemming van deelnemers is verkregen.</p>
+    </div>
+
+    <div class="section">
+      <h2>12. Verzekering</h2>
+      <p><strong>12.1</strong> Aannemer is verzekerd voor aansprakelijkheid in geval van lichamelijk letsel of zaakschade.</p>
+      <p><strong>12.2</strong> Opdrachtgever draagt zelf zorg voor alle noodzakelijke verzekeringen met betrekking tot het event.</p>
+    </div>
+
+    <div class="section">
+      <h2>13. Geheimhouding</h2>
+      <p><strong>13.1</strong> Aannemer zal alle vertrouwelijke informatie over het event geheim houden.</p>
+      <p><strong>13.2</strong> Dit geldt niet voor informatie die nodig is voor de uitvoering van de Diensten.</p>
+    </div>
+
+    <div class="section">
+      <h2>14. Intellectueel Eigendom</h2>
+      <p><strong>14.1</strong> Alle ontwerpen, mengingen, setups en overige creatieve werkzaamheden zijn eigendom van Aannemer.</p>
+      <p><strong>14.2</strong> Opdrachtgever mag deze alleen gebruiken voor het afgesproken event.</p>
+    </div>
+
+    <div class="section">
+      <h2>15. Force Majeure</h2>
+      <p><strong>15.1</strong> Geen van beide partijen is aansprakelijk voor niet-nakoming van de overeenkomst door omstandigheden buiten hun redelijke controle.</p>
+      <p><strong>15.2</strong> In geval van force majeure zal Aannemer, indien mogelijk, alternatieve oplossingen bieden.</p>
+      <p><strong>15.3</strong> Indien het event niet kan doorgaan vanwege force majeure, ontvangt Opdrachtgever volledige restitutie van betaalde bedragen.</p>
+    </div>
+
+    <div class="section">
+      <h2>16. Geschillen</h2>
+      <p><strong>16.1</strong> Deze overeenkomst wordt beheerst door Nederlands recht.</p>
+      <p><strong>16.2</strong> Alle geschillen voortvloeiend uit deze overeenkomst zullen eerst via overleg tussen de partijen worden opgelost.</p>
+      <p><strong>16.3</strong> Mocht dit niet tot resultaat leiden, kunnen de geschillen voorgelegd worden aan de bevoegde Nederlandse rechter.</p>
+    </div>
+
+    <div class="section">
+      <h2>17. Wijzigingen van de Voorwaarden</h2>
+      <p><strong>17.1</strong> Aannemer behoudt zich het recht voor deze Algemene Voorwaarden te wijzigen.</p>
+      <p><strong>17.2</strong> Wijzigingen worden op deze pagina gepubliceerd en zijn van kracht 14 dagen na publicatie.</p>
+      <p><strong>17.3</strong> Reeds ingegane overeenkomsten worden niet door wijzigingen geraakt, tenzij beide partijen hieraan instemmen.</p>
+    </div>
+
+    <div class="contact-block">
+      <h3>Contactgegevens</h3>
+      <p><strong>Geluidsexperience</strong></p>
+      <p>Joël Plas<br>
+      Brederode 140<br>
+      2261 HM Leidschendam<br>
+      Telefoon: <a href="tel:+31650294835">06 50 29 48 35</a><br>
+      Email: <a href="mailto:info@geluidsexperience.nl">info@geluidsexperience.nl</a><br>
+      KvK: 27186740</p>
+    </div>
+
+    <p style="margin-top: 60px; color: var(--text-soft); font-size: 12px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+      Versie 1.0 — Januari 2024<br>
+      © 2024 Geluidsexperience — Altijd goed geluid
+    </p>
+  </div>
+</body>
+</html>
